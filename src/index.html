@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>txt</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+<main class="container">
+    <form id="formElem">
+        <input type="file" id="file-selector" name="text_file" accept=".txt"/>
+        <input type="submit"/>
+        <ul id="file-list"></ul>
+    </form>
+</main>
+
+
+<script>
+    let formElem = document.querySelector("#formElem");
+    let fileList = document.getElementById("file-list");
+
+    function paintLine(line) {
+        let li = document.createElement("li");
+        li.innerText = line;
+        fileList.appendChild(li);
+    }
+
+    formElem.addEventListener("submit", (e) => {
+        e.preventDefault();
+        let data = new FormData(formElem);
+
+        let reader = new FileReader();
+        reader.onload = (e) => {
+            let file = e.target.result;
+            let textArray = file.split("\r\n");
+            let reverseArray = textArray.reverse();
+            reverseArray.forEach((line) => paintLine(line));
+        };
+
+        reader.readAsText(data.get("text_file"));
+    });
+</script>
+
+</body>
+</html>
